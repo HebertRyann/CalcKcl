@@ -28,9 +28,9 @@ jobs:
       - name: Copy file via SSH to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ env.SSH_HOST }}
-          username: ${{ env.SSH_USER }}
-          key: ${{ env.SSH_KEY }}
-          port: ${{ env.SSH_PORT }}
+          host: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_HOST }}
+          username: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_USER }}
+          key: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_KEY }}
+          port: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_PORT }}
           source: ".,!node_modules"
           target: "/home/ec2-user/applications/production/calc-kcl"
