@@ -36,10 +36,10 @@ jobs:
       - name: copy file via ssh to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ env.SSH_HOST }}
-          username: ${{ env.SSH_USER }}
+          host: "ec2-user@ec2-18-118-93-78.us-east-2.compute.amazonaws.com"
+          username: "ec2-user"
           key: "-----BEGIN RSA PRIVATE KEY-----MIIEogIBAAKCAQEAviGb+5zTZZz26U8HMgSeOorxYN3kJrsfEnix5bF502femkDEFI3YXDGt43s0lxUC2blYB9Nj29mYrkYNxEn5w7AJnWerCX8QYUeOYirOGWQSZEoKnxryzEomAlO1tqsMd2YUar6nIIBvj8Mx8zPp7fLipaSsetnaz8bEGBnqFmowADtwi+X37ja7OJHpxVYKJ3Mm60Vg7rGcPyA/+v8nby517bv5MF5TwDCFhH/YGDj9J5FjXBvdDFIaylDOqJpPXIhZhARmE62GV4lJU9rbGaZWgf/Hr/EzIAL0cB5/UhDozdArwA9OyYzPaUxhhpNdIndQ5Xd+wwx50b60qGG5nwIDAQABAoIBACOKrtjzMQVOuU1Vy5eLC3UQIh0kfZDL6/wM+dxhN8/QG+mj78OT3H0ngEUE9AjGEblXj2AvIPypCYSSbeJincD5+GInTe7BhPNaaABr1gkjDtkWijPB2t9bgQ1wToiuIu9y8qAdsao+uBwctgqrirBDdiDWzrNMZD3w/xkuRvcXYa59C2DuAzRmNRizCSwMgX6BdWdPbAqcEUwNVjYpZjnFM6U28H+f8VCuRm+89o4YzbYL05NeaDCwxPLcM4bSuBaSG9lVofXY28duGWEYXdg+clLY+HsK5QtTYIy1TjE80DW/y85TWl5gBXNVcFK3rCoGXvRdObII3LkovXmeX8kCgYEA81O14cV6huF53cO8zCa6bSS8UdVv7lTA4x4zUoj7CIxQQIRed1P2TY2hKQG1DkxchyBXhflntnOOfqj61stOrPmpYfi22mmc3QpZrTQdJGLUzUuFpRCrZrat5qJBpCTYFzLB7sSBigXT31zBuxCnYTLIbS2trEq7JyISe+Dd3ksCgYEAyAijW8nsDiOhpdUeoaPsGCboUQv0GFmJKcx4ckBlR7bEmh9xaBAtlCH6GNPh1Kk/3lhwRADDagw81iq3EKWaD0/0q144OahK7Yrqgor8Z1u5w9zIwtAECUG5m/sAbHT6xLjKdcau1Tcv3KZceggsvnyYqAXaXuiE1lpirLRLLX0CgYAKVxdWlc7EJpbILsY6IrcvZi0+iQRtq1pbDHB/5GROk6/hXf6psX65AvjDRlhMWEBiWaR+g/+9SCHZDhNCx3b7cMya5jfXBj/tQMBY1OscHbsPUlNGlXPDNKYlM+X4NLyeF8EYBW+/zsmXJ1jwOx/xyHet9A/6T16upgsFCqRDCwKBgAwNoTJNt4CemwXwEplw1DAcYBFKJBo3gvFW1cckpDWvCKe0z1OS7fwoE/bdBZWX4TZXo+QlG6FPPXc2ObOyFtdnXPnago7O2jz4Cut0zoK33zizHBHJEQUxxapldIAUiGvEKsbwAubsHWExUQ81YOTVgylUuPTRE/gKmDmJ36HNAoGAVUHaO/GpW5UiW5Y41NJtxSTRfEUcUYyRh4N61UqZ6tU4S0V481FwM782LuPW1h08S3CScOYPD08bpT1yXYx8hkArRAstDQwrUqFcxR4cwtcCV824G4k31/Hfc7MJWb9zMS7z/IQ1rpduXzE8qjsF1n/sSUmf2sSgWNl0Q7eRHo0=-----END RSA PRIVATE KEY-----"
-          port: ${{ env.SSH_PORT }}
+          port: 22
           source: ".,!node_modules"
           target: "/usr/share/nginx/multfluxo/api"
             
