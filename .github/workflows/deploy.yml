@@ -23,14 +23,14 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y jq
           fi
-          echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
-                
-
+          echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done          
         
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 16.x
+      - name: Envs After
+        run: echo "key = ${{ env.SSH_KEY }}"
     
       #Copiar código para servidor
       - name: copy file via ssh to server
