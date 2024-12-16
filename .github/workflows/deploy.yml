@@ -16,13 +16,31 @@ jobs:
         with:
           node-version: 16.x
 
-      #Copiar código para servidor
-      - name: copy file via ssh to server
+      - name: Parse JSON secret
+        id: parse_secrets
+        run: |
+          echo "${{ secrets.ONE_CLICK_DEPLOY_SECRETS }}" > deploy-secrets.json
+          export SSH_HOST=$(jq -r '.SSH_HOST' deploy-secrets.json)
+          export SSH_USER=$(jq -r '.SSH_USER' deploy-secrets.json)
+          export SSH_KEY=$(jq -r '.SSH_KEY' deploy-secrets.json)
+          export SSH_PORT=$(jq -r '.SSH_PORT' deploy-secrets.json)
+        env:
+          ONE_CLICK_DEPLOY_SECRETS: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS }}
+
+      - name: Debug loaded variables (optional)
+        run: |
+          echo "Host: $SSH_HOST"
+          echo "User: $SSH_USER"
+          echo "Port: $SSH_PORT"
+          echo "Target: $SSH_TARGET"
+          # Note: Não exiba chaves privadas em produção!
+
+      - name: Copy file via SSH to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ SECRETS.SSH_HOST }}
-          username: ${{ SECRETS.SSH_USER }}
-          key: ${{ SECRETS.SSH_KEY }}
-          port: ${{ SECRETS.SSH_PORT }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_KEY }}
+          port: ${{ env.SSH_PORT }}
           source: ".,!node_modules"
           target: "/home/ec2-user/applications/production/calc-kcl"
