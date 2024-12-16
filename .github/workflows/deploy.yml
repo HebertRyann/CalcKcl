@@ -23,25 +23,22 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y jq
           fi
-                
-  build:
-      runs-on: ubuntu-latest
-  
-      steps:
-        - uses: actions/checkout@v2
+                - uses: actions/checkout@v2
         
-        - name: Setup Node.js environment
-          uses: actions/setup-node@v2.1.5
-          with:
-            node-version: 16.x
-  
-        #Copiar código para servidor
-        - name: copy file via ssh to server
-          uses: appleboy/scp-action@master
-          with:
-            host: ${{ env.SSH_HOST }}
-            username: ${{ env.SSH_USER }}
-            key: ${{ env.SSH_KEY }}
-            port: ${{ env.SSH_PORT }}
-            source: ".,!node_modules"
-            target: "/usr/share/nginx/multfluxo/api"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16.x
+
+      #Copiar código para servidor
+      - name: copy file via ssh to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_KEY }}
+          port: ${{ env.SSH_PORT }}
+          source: ".,!node_modules"
+          target: "/usr/share/nginx/multfluxo/api"
+            
+
