@@ -16,21 +16,20 @@ jobs:
         with:
           node-version: 16.x
 
-
       - name: Debug loaded variables (optional)
         run: |
-          echo "Host: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_PORT }}"
-          echo "User: $SSH_USER"
-          echo "Port: $SSH_PORT"
+          echo "Host: ${{ secrets.ONE_CLICK_DEPLOY.SSH_HOST }}"
+          echo "Port: ${{ secrets.ONE_CLICK_DEPLOY.SSH_PORT }}"
           echo "Target: $SSH_TARGET"
           # Note: Não exiba chaves privadas em produção!
 
-      - name: Copy file via SSH to server
+      # Copiar código para servidor
+      - name: Copy files via SSH to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_HOST }}
-          username: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_USER }}
-          key: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_KEY }}
-          port: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_PORT }}
+          host: ${{ secrets.ONE_CLICK_DEPLOY.SSH_HOST }}
+          username: ${{ secrets.ONE_CLICK_DEPLOY.SSH_USER }}
+          key: ${{ secrets.ONE_CLICK_DEPLOY.SSH_KEY }}
+          port: ${{ secrets.ONE_CLICK_DEPLOY.SSH_PORT }}
           source: ".,!node_modules"
           target: "/home/ec2-user/applications/production/calc-kcl"
