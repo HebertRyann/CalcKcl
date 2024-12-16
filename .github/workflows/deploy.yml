@@ -28,4 +28,4 @@ jobs:
       - name: Envs After
         run: |
           echo "Env values after"
-          echo "${{ env.ENCODED_PIPELINE_SECRET.SSH_PORT }}"
+          echo "SSH_PORT: ${{ env.ENCODED_PIPELINE_SECRET.SSH_PORT }}"
