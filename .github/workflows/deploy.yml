@@ -16,20 +16,10 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Parse JSON secret
-        id: parse_secrets
-        run: |
-          echo "${{ secrets.ONE_CLICK_DEPLOY_SECRETS }}" > deploy-secrets.json
-          export SSH_HOST=$(jq -r '.SSH_HOST' deploy-secrets.json)
-          export SSH_USER=$(jq -r '.SSH_USER' deploy-secrets.json)
-          export SSH_KEY=$(jq -r '.SSH_KEY' deploy-secrets.json)
-          export SSH_PORT=$(jq -r '.SSH_PORT' deploy-secrets.json)
-        env:
-          ONE_CLICK_DEPLOY_SECRETS: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS }}
 
       - name: Debug loaded variables (optional)
         run: |
-          echo "Host: $SSH_HOST"
+          echo "Host: ${{ secrets.ONE_CLICK_DEPLOY_SECRETS.SSH_PORT }}"
           echo "User: $SSH_USER"
           echo "Port: $SSH_PORT"
           echo "Target: $SSH_TARGET"
