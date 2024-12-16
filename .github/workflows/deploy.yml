@@ -4,32 +4,26 @@ on:
   push:
     branches: [ master ]
 
+env:
+  ENCODED_PIPELINE_SECRET: ${{ secrets.ONE_CLICK_DEPLOY }}
+
 jobs:
-  build:
+  secrets:
+    name: Accessing JSON secret
+    permissions: write-all
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.5
-        with:
-          node-version: 16.x
-
-      - name: Debug loaded variables (optional)
+      - name: Envs Before
+        run: echo "Env values before"
+        
+      - name: Decode Secrets
         run: |
-          echo "Host: ${{ secrets.ONE_CLICK_DEPLOY.SSH_HOST }}"
-          echo "Port: ${{ secrets.ONE_CLICK_DEPLOY.SSH_PORT }}"
-          echo "Target: $SSH_TARGET"
-          # Note: Não exiba chaves privadas em produção!
-
-      # Copiar código para servidor
-      - name: Copy files via SSH to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.ONE_CLICK_DEPLOY.SSH_HOST }}
-          username: ${{ secrets.ONE_CLICK_DEPLOY.SSH_USER }}
-          key: ${{ secrets.ONE_CLICK_DEPLOY.SSH_KEY }}
-          port: ${{ secrets.ONE_CLICK_DEPLOY.SSH_PORT }}
-          source: ".,!node_modules"
-          target: "/home/ec2-user/applications/production/calc-kcl"
+          if [ ! -x "$(command -v jq)" ]; then
+            echo "jq not found, installing..."
+            sudo apt-get update
+            sudo apt-get install -y jq
+          fi
+          echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
+                
+      - name: Envs After
+        run: echo "Env values after"
