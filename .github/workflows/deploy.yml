@@ -25,7 +25,22 @@ jobs:
           fi
           echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done
                 
-      - name: Envs After
-        run: echo "SSH_KEY = ${{ env.SSH_KEY }}"
+
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16.x
+    
+      #Copiar código para servidor
+      - name: copy file via ssh to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ".,!node_modules"
+          target: "/usr/share/nginx/multfluxo/api"
             
 
