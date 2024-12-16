@@ -15,14 +15,6 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 16.x
-        
-      #Instalar as dependências NPM/YARN
-      - name: Install dependencies
-        run: yarn
-
-      #Executar a build
-      - name: Run Build
-        run: yarn build
 
       #Copiar código para servidor
       - name: copy file via ssh to server
@@ -34,14 +26,3 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: ".,!node_modules"
           target: "/home/ec2-user/applications/production/calc-kcl"
-      
-      - name: Run production scripts
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: | 
-            cd /home/ec2-user/applications/production/calc-kcl
-            npm install
