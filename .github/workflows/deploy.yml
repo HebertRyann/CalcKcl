@@ -1,29 +1,29 @@
-name: CI
+name: Debug Deploy
 
 on:
   push:
     branches: [ master ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.5
-        with:
-          node-version: 16.x
-          
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-      #Copiar código para servidor
-      - name: copy file via ssh to server
-        uses: appleboy/scp-action@master
-        with:
-          host: "ec2-3-22-242-130.us-east-2.compute.amazonaws.com"
-          username: "ec2-user"
-          key: ${{ secrets.ONE_CLICK_DEPLOY_SSH_KEY }}
-          port: 22
-          source: ".,!node_modules"
-          target: "/usr/share/calc/api"
+      - name: Create SSH Key
+        run: |
+          echo "${{ secrets.ONE_CLICK_DEPLOY_SSH_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          echo "✅ SSH key created"
+
+      - name: Debug SSH Key
+        run: |
+          ls -la private_key.pem
+          file private_key.pem
+          cat private_key.pem | head -n 5
+
+      - name: Test SSH Connection
+        run: |
+          ssh -i private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.ONE_CLICK_DEPLOY_SSH_HOST }} "echo 'SSH Connection Successful!'"
