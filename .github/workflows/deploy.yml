@@ -16,11 +16,6 @@ jobs:
         with:
           node-version: 16.x
           
-      - name: Create SSH Key File
-        run: |
-          echo "${{ secrets.ONE_CLICK_DEPLOY_SSH_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-
 
       #Copiar código para servidor
       - name: copy file via ssh to server
@@ -28,7 +23,7 @@ jobs:
         with:
           host: "ec2-3-22-242-130.us-east-2.compute.amazonaws.com"
           username: "ec2-user"
-          key: -----BEGIN RSA PRIVATE KEY-----MIIEpAIBAAKCAQEAvPIUtvQFfYAlqfBOsYOB8ZuF+ZwVy0TerMI292PhVfT/pgGTOjmBxQuS0L+QxvKjLKbcPeU+brvTztEhKH42iS89E2JIKYXNSoSIRFDILhO+WdCehWiaKBISykxurbmT6iVVQfwKZTHSsnYFX+/755g1Jh2VnszUUxpXtE/YkSi3lwjumdChdQOrsTaLn3LsGw1KBP9pJia1MZXyEXYjomjqAfZIoFLq4vTgC7EStgMKpWGM0Ywb2QJT4SB759Os2Br2klHSbTS2ktndoy1+TjXYMQyOU3Q8YIb47YQXw3cp3KN5p9wR4SB9vgPZPRJSInJGbC486IQuXjpteU46LwIDAQABAoIBAQCwf+Lh1KmcRqzoRlb8c8BbFdDdDvU84KSx9Oqrxl2kkiyNwkLpzPZwPxNydMClV9sdxvFN0Gu1vTdqpui2jtAa7km7Zb/LKfZPeeZhCqU0hbT26W5raP84F0n+N8/b8NM/kohGD08WoKgVlTIIIIHMId7kMBaoNObSinULNtszHJ5kd8aPu3EWuA/OqCWTlhUhH41reisbSY5Gv3AkdoOhs1CWI39KM08Mxme19IUWjpvBpSlTcDzxPPKioQQtlNGP1EotESbVtLfrmuUkfBe2yyRHlNNERfbrvsnz/vXmxPDFYJ/0cjuzrv7dKKBn+mpfaEISXiFI6IjaXp0dyI4BAoGBAOlh/9oao3AicMdWk9+ARTDo7pX5zhN/j9u6F808SOWERK/qeWy96rfYgQlVxIYbXo4Gl8LGoUc/4FatnO3tmIsvqKCOS5c6IfZKEefumT3yklVx66XYMU2KfGZzK0rGopYK8BMGyr18LrGc/KA98TUyRfgv5/3Zr3FYO/IcLrpBAoGBAM9Bo2L62CbCUbKywEtK+F7aDT8yLx2pLdmu1XHGes2lv4YB7UWsPE28bwlBvYjtlz8VCorDeLysSyMOIai2Xf5DCt+z/ZWCz4UwIY+TWuDjLca+0qY9XjejwQ1FzhANy8OylWNLzaL8Ae2IBAm91XLwQy5tYfr8H4P0/EJofXhvAoGAGcZvAWGLx2imV/2h2z9JZPt0zi+GqPSfqL7Gvi34RxDynRMiUfYvpBpPNf648662JK1puWNCkKHnXutRt51UCZs73m+YvZz3/0Fy9NCPMB5INxOb2PclitDOqGnz0BBcCIIwvYk0fvTmG0uhQvlUWHGy9JQl5Q1TqQr7o+Ok7YECgYEAh5YPR1+HLMQPInKiLh+boKHR7Lft7t+QqUohRM9t4z89rnNwQBZPVSOjGFEzp3KXcaNYRDNgtz2X4hUKnA7CKua9JF/h03/CNwWnzv+9gkXc2ppXwH2BN7EfSImUJxh/Z0VbSZx7qNZohHZo/d581zarHKJeaQ2rqG4K4X7uJm0CgYAbf6nvaMXha+u1U1t6nvQNDOufBklwESEYRFX/nByXwcan8nPHknvkYLaaCNAKv0I7LxXusMlbf1AtMktmfokEF/1tmsZZKuVhfnzgLuo0NngqNjdqUC+8xLWB/E1fYWzkEriaqbOYe7VwPivYvvlTquqPKZFr28cAWQo8gOZb5Q==-----END RSA PRIVATE KEY-----
+          key: ${{ secrets.ONE_CLICK_DEPLOY_SSH_KEY }}
           port: 22
           source: ".,!node_modules"
           target: "/usr/share/calc/api"
