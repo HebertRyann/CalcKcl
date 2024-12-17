@@ -4,41 +4,25 @@ on:
   push:
     branches: [ master ]
 
-env:
-  ENCODED_PIPELINE_SECRET: ${{ secrets.ONE_CLICK_DEPLOY }}
-
 jobs:
-  secrets:
-    name: Accessing JSON secret
-    permissions: write-all
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Envs Before
-        run: echo "Env values before"
-        
-      - name: Decode Secrets
-        run: |
-          if [ ! -x "$(command -v jq)" ]; then
-            echo "jq not found, installing..."
-            sudo apt-get update
-            sudo apt-get install -y jq
-          fi
-          echo "${{ env.ENCODED_PIPELINE_SECRET }}" | base64 --decode | jq -r 'to_entries[] | "\(.key)=\(.value)"' | while read line; do echo "$line" >> $GITHUB_ENV; echo "::add-mask::${line#*=}"; done          
-        
+      - uses: actions/checkout@v2
+      
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 16.x
-    
+
       #Copiar código para servidor
       - name: copy file via ssh to server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ env.SSH_HOST }}
-          username: ${{ env.SSH_USER }}
-          key: ${{ env.SSH_KEY }}
-          port: ${{ env.SSH_PORT }}
+          host: ${{ secrets.ONE_CLICK_DEPLOY_SSH_HOST }}
+          username: ${{ secrets.ONE_CLICK_DEPLOY_SSH_USER }}
+          key: ${{ secrets.ONE_CLICK_DEPLOY_SSH_KEY }}
+          port: ${{ secrets.ONE_CLICK_DEPLOY_SSH_PORT }}
           source: ".,!node_modules"
-          target: "/usr/share"
-            
-
+          target: "/usr/share/calc/api"
