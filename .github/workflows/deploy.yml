@@ -15,6 +15,11 @@ jobs:
         uses: actions/setup-node@v2.1.5
         with:
           node-version: 16.x
+          
+      - name: Create SSH Key File
+        run: |
+          echo "${{ secrets.ONE_CLICK_DEPLOY_SSH_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
 
 
       #Copiar código para servidor
