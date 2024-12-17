@@ -26,5 +26,5 @@ jobs:
 
       - name: Debug SSH Connection
         run: |
-          ssh -vvv -i private_key.pem -o StrictHostKeyChecking=no ec2-user@${{ secrets.ONE_CLICK_DEPLOY_SSH_HOST }}
+          ssh -vvv -i private_key.pem -o StrictHostKeyChecking=no ec2-user@ec2-3-22-242-130.us-east-2.compute.amazonaws.com
 
