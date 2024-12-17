@@ -16,13 +16,12 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Debug loaded variables (optional)
+      - name: Debug SSH Key
         run: |
-          echo "Host: ${{ secrets.ONE_CLICK_DEPLOY_SSH_HOST }}"
-          echo "Port: ${{ secrets.ONE_CLICK_DEPLOY_SSH_PORT }}"
-          echo "Target: ${{ secrets.ONE_CLICK_DEPLOY_SSH_TARGET }}"
-          echo "User: ${{ secrets.ONE_CLICK_DEPLOY_SSH_USER }}"
-          # Nunca exponha a chave privada no log!
+          echo "${{ secrets.ONE_CLICK_DEPLOY_SSH_KEY }}" > debug_key.pem
+          chmod 600 debug_key.pem
+          ssh-keygen -lf debug_key.pem
+
 
       #Copiar código para servidor
       - name: copy file via ssh to server
